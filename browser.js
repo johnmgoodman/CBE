@@ -1,4 +1,6 @@
-/* This is just a file for testing the code in the browser */
+/* This is just a file for testing the code in the browser.
+ * I left it here as a quick and dirty example of using the engine.
+ */
 "use strict";
 
 window.game = (function(CBE) {
