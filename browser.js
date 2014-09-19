@@ -28,7 +28,7 @@ window.game = (function(CBE) {
 	}]);
 
 	return game;
-})(require('./cbe'));
+})(require('./core/cbe'));
 
 window.loop = function() {
 	game.update();
