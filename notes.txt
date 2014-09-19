@@ -1,0 +1,49 @@
+inter-system communication:
+	Ex) 
+		1 PhysicsSystem detects collision between Entity3 and Entity85
+
+		2 PhysicsSystem sends 2 messages (one for each entity):
+
+			Engine.Observer.send({
+				type: 'collision',
+				entity: 3,
+				data: {
+					force: 47,
+					theta: 180,
+					foreignBody: 85
+				}
+			});
+
+			Engine.Observer.send({
+				type: 'collision',
+				entity: 85,
+				data: {
+					force: 47,
+					theta: -180,
+					foreignBody: 3
+				}
+			});
+
+		 * Note: Messages use encapsulation, so the message 'type' property indicates what is inside the 'data' property. A little bit of coupling here..
+
+		3 Systems subscribed to 'collision' message types process the message if they contain components for the entity that's specified by the message's 'entity' property:
+
+			HealthSystem.collisionCallback = function(entityId,collisionData) {
+				//this.entity() returns the system's component data structure (by reference) for the specified entity, or undefined if it's not found in the system
+				var component = this.entity(entityId),
+					health;
+
+				if(typeof component !== 'undefined') {
+					health = component[COMP_HEALTH] -= collisionData.force;
+
+					if(health <= 0) {
+						Engine.Observer.send({
+							type: 'death',
+							entity: entityId,
+							data: {
+								cause: 'Killed by collision!'
+							}
+						});
+					}
+				}
+			};
