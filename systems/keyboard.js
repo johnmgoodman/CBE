@@ -1,5 +1,6 @@
 "use strict";
 
+/* Initialization function for a keyboard input system */
 module.exports = function(CBE,game,context) {
   var Keyboard = new CBE.System(),
 
