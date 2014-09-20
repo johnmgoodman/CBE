@@ -15,11 +15,38 @@ Entities are normally thought of as objects that represent game artifacts, chara
 The CBE engine actually doesn't specify any entity psuedo-class other than that each entity is a basic object whose properties each specify a component for a domain. For our bat example:
 
     var bat = {
-    	'rendering': ['bat_sprite.png'],
-    	'behavior': ['aggressive','cautious'],
-    	'status': ['flying']
+      'rendering': ['bat_sprite.png'],
+      'behavior': ['aggressive','cautious'],
+      'status': ['flying']
     };
 
+
+Systems
+-------
+
+Systems hold most of the game code. As entities are loaded, the entity components are stored for processing in their relevant systems and how a system handles its components is up to the programmer.
+
+A system can subscribe to a message delegator called an `Observer`. Other systems can publish messages to the observer and the observer will notify subscribed systems by pushing the message into the system's message queue.
+
+When the system's `update()` method is called, the system iterates over its queued messages and fires off an 'action' associated with the message type:
+
+    StatusSystem.addAction('heal',function(message, component, delta) {
+      component[HEALTH] += message.data.amount;
+    };
+
+
+Observers
+---------
+
+An observer is a message delegator that relays data between systems. A system may `send()` a message to an observer and if that observer contains 'subscriptions' for the message type, the observer will `notify()` the subscriber(s).
+
+    Observer.send({
+      type: 'heal',
+      entity: "4",
+      data: {
+        amount: 24
+      }
+    });
 
 
 
