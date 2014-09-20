@@ -24,7 +24,7 @@ module.exports = function(CBE,game,context) {
       return function(event) {
         Keyboard.eachComponent(notifyIfListening, {
           type: event.type,
-          key: event.key
+          key: event.keyCode
         });
       };
 
