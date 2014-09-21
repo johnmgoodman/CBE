@@ -30,9 +30,12 @@ A system can subscribe to a message delegator called an `Observer`. Other system
 
 When the system's `update()` method is called, the system iterates over its queued messages and fires off an 'action' associated with the message type:
 
-    StatusSystem.addAction('heal',function(message, component, delta) {
+
+    var healAction = function(message, component, delta) {
       component[HEALTH] += message.data.amount;
     };
+    
+    StatusSystem.addAction('heal',healAction);
 
 
 Observers
@@ -40,13 +43,15 @@ Observers
 
 An observer is a message delegator that relays data between systems. A system may `send()` a message to an observer and if that observer contains 'subscriptions' for the message type, the observer will `notify()` the subscriber(s).
 
-    Observer.send({
+    var healMessage = {
       type: 'heal',
       entity: "4",
       data: {
         amount: 24
       }
-    });
+    };
+
+    Observer.send(healMessage);
 
 
 
